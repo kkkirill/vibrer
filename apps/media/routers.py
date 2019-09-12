@@ -7,6 +7,7 @@ from apps.media.views.song import SongView
 
 
 
+
 router = routers.DefaultRouter()
 router.register('genre', GenreView)
 router.register('artist', ArtistView)

@@ -1,7 +1,13 @@
+from os import environ
 from random import randint
 from typing import Union
 
+import django
 import factory
+import faker
+
+environ.setdefault('DJANGO_SETTINGS_MODULE', 'vibrer.settings')
+django.setup()
 
 
 from apps.media.models.album import Album

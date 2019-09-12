@@ -3,11 +3,11 @@ from rest_framework.serializers import ModelSerializer
 
 from apps.media.models.song import Song
 from apps.media.serializers.artist import ArtistShortInfoSerializer
-from apps.media.serializers.genre import GenreDetailSerializer
+from apps.media.serializers.genre import GenreSerializer
 
 
-class SongDetailSerializer(ModelSerializer):
-    genres = GenreDetailSerializer(many=True,)
+class SongSerializer(ModelSerializer):
+    genres = GenreSerializer(many=True,)
     artists = ArtistShortInfoSerializer(many=True,)
 
     class Meta:
@@ -17,8 +17,8 @@ class SongDetailSerializer(ModelSerializer):
         read_only_fields = ('listens', 'duration')
 
 
-class SongShortInfoSerializer(SongDetailSerializer):
-    class Meta(SongDetailSerializer.Meta):
+class SongShortInfoSerializer(SongSerializer):
+    class Meta(SongSerializer.Meta):
         fields = ('url', 'title', 'duration', 'explicit', 'image')
 
 
