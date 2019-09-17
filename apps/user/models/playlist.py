@@ -9,3 +9,6 @@ class Playlist(Model):
     songs = ManyToManyField(Song, related_name='playlists')
     songs_amount = PositiveSmallIntegerField(default=0)
     is_private = BooleanField(default=False)
+
+    def __str__(self):
+        return self.name

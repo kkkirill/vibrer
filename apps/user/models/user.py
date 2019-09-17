@@ -36,7 +36,7 @@ class User(AbstractBaseUser):
     username = CharField(max_length=50, unique=True)
     email = EmailField(max_length=50, unique=True)
     photo = ImageField(default=None, upload_to='media/')
-    followers = ManyToManyField('User', related_name='users')
+    followers = ManyToManyField('User', blank=True, related_name='users')
     followers_amount = IntegerField(default=0)
     liked_songs = ManyToManyField(Song, related_name='users')
     is_staff = BooleanField(default=False)
