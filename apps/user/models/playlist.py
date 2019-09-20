@@ -1,5 +1,5 @@
-from django.db.models import (BooleanField, CharField, ManyToManyField, Model,
-                              PositiveSmallIntegerField)
+from django.db.models import (
+    BooleanField, CharField, ManyToManyField, Model, PositiveSmallIntegerField)
 
 from apps.media.models.song import Song
 
