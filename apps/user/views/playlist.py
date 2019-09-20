@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework_extensions.mixins import NestedViewSetMixin
 
 from apps.user.models.playlist import Playlist
-from apps.user.permissions import IsOwnerOrAdmin
+from apps.user.permissions import IsOwnerOrAdmin, IsOwnerOrAdminSong
 from apps.user.serializers.playlist import (
     PlaylistCUSerializer, PlaylistSerializer, PlaylistShortInfoSerializer,
     SongsInPlaylistSerializer)
@@ -11,6 +11,7 @@ from apps.user.serializers.playlist import (
 
 class PlaylistView(NestedViewSetMixin, viewsets.ModelViewSet):
     http_method_names = ('get', 'post', 'put')
+    permission_classes = (IsOwnerOrAdmin,)
 
     def get_serializer_class(self):
         method = getattr(self.request, 'method', None)
@@ -31,6 +32,7 @@ class PlaylistView(NestedViewSetMixin, viewsets.ModelViewSet):
 class SongsInPlaylistView(NestedViewSetMixin, viewsets.ModelViewSet):
     http_method_names = ('post', 'delete',)
     serializer_class = SongsInPlaylistSerializer
+    permission_classes = (IsOwnerOrAdminSong,)
 
     def get_queryset(self):
         playlist_id = self.kwargs['parent_lookup_playlist']
