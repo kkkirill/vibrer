@@ -3,7 +3,8 @@ from rest_framework.response import Response
 from rest_framework_extensions.mixins import NestedViewSetMixin
 
 from apps.user.models.playlist import Playlist
-from apps.user.permissions import IsOwnerOrAdmin, IsOwnerOrAdminSong
+from apps.user.permissions import (
+    IsOwnerOrAdmin, IsOwnerOrAdminSong)
 from apps.user.serializers.playlist import (
     PlaylistCUSerializer, PlaylistSerializer, PlaylistShortInfoSerializer,
     SongsInPlaylistSerializer)
@@ -26,7 +27,10 @@ class PlaylistView(NestedViewSetMixin, viewsets.ModelViewSet):
 
     def get_queryset(self):
         user_id = self.kwargs['parent_lookup_user_playlists']
-        return Playlist.objects.filter(users=user_id)
+        if self.request.user.id == user_id or self.request.user.is_staff:
+            return Playlist.objects.filter(owner_id=user_id)
+        return Playlist.objects.filter(owner=user_id,
+                                       is_private=False)
 
 
 class SongsInPlaylistView(NestedViewSetMixin, viewsets.ModelViewSet):

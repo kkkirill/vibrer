@@ -1,21 +1,18 @@
 from django.conf import settings
-from django.contrib.auth import logout as django_logout, get_user_model
+from django.contrib.auth import get_user_model
+from django.contrib.auth import logout as django_logout
 from django.core.exceptions import ObjectDoesNotExist
-
 from rest_framework.authtoken.models import Token
-from rest_framework.generics import RetrieveAPIView, GenericAPIView
+from rest_framework.generics import GenericAPIView, RetrieveAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.status import (
-    HTTP_201_CREATED, HTTP_200_OK
-)
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAuthenticated
 
 from apps.user.serializers.user import (
-    UserSerializer, UserShortInfoSerializer, UserRegistrationSerializer,
-    UserLoginSerializer
-)
+    UserLoginSerializer, UserRegistrationSerializer, UserSerializer,
+    UserShortInfoSerializer)
 
 User = get_user_model()
 
@@ -84,4 +81,3 @@ class UserGetDetailsView(RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
-

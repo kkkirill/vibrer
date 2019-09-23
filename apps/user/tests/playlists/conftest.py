@@ -7,10 +7,10 @@ from utils.factories import (
 
 
 @pytest.fixture
-def playlist():
-    return PlaylistFactory.create(
-        songs=SongFactory.create_batch(size=6),
-    )
+def playlist(is_private=False):
+    user = UserFactory.create()
+    return PlaylistFactory.create(owner=user, is_private=is_private,
+                                  songs=SongFactory.create_batch(size=6))
 
 
 @pytest.fixture
@@ -20,14 +20,15 @@ def playlist_qty():
 
 @pytest.fixture
 def playlists(album_qty):
-    return PlaylistFactory.create_batch(size=playlist_qty)
+    user = UserFactory.create()
+    return PlaylistFactory.create_batch(size=playlist_qty, owner=user)
 
 
 @pytest.fixture
 def user():
-    return UserFactory.create(
-        playlists=PlaylistFactory.create_batch(size=5)
-    )
+    user = UserFactory.get()
+    PlaylistFactory.create(owner=user)
+    return user
 
 
 # @pytest.fixture

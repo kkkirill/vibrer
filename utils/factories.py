@@ -1,21 +1,14 @@
-from os import environ
 from random import randint
 from typing import Union
 
-import django
 import factory
-import faker
-
-environ.setdefault('DJANGO_SETTINGS_MODULE', 'vibrer.settings')
-django.setup()
-
 
 from apps.media.models.album import Album
 from apps.media.models.artist import Artist
 from apps.media.models.genre import Genre
 from apps.media.models.song import Song
+from apps.user.models.playlist import Playlist
 from apps.user.models.user import User
-
 
 GENRES = [
     'Hip - Hop',
@@ -155,7 +148,28 @@ class UserFactory(factory.django.DjangoModelFactory):
                 self.liked_songs.add(ls)
 
 
-def fill_with_data(model: Union[Album, Artist, Genre, Song, User],
+class PlaylistFactory(factory.django.DjangoModelFactory):
+    name = factory.Faker('pystr', min_chars=5, max_chars=10)
+    songs_amount = 0
+    is_private = factory.Faker('pybool')
+    owner = factory.SubFactory(UserFactory)
+
+    class Meta:
+        model = Playlist
+
+    @factory.post_generation
+    def songs(self, create, extracted):
+        if not create:
+            return
+
+        if extracted:
+            self.songs_amount = len(extracted)
+
+            for so in extracted:
+                self.songs.add(so)
+
+
+def fill_with_data(model: Union[Album, Artist, Genre, Song, User, Playlist],
                    min_limit: int, max_limit: int) -> frozenset:
     """
     This function generates a collection with random size.
@@ -183,6 +197,7 @@ def fill(amount=50):
     Genre.objects.all().delete()
     Song.objects.all().delete()
     User.objects.all().delete()
+    Playlist.objects.all().delete()
 
     # creating genres here
     for _ in range(len(GENRES)):
@@ -206,7 +221,13 @@ def fill(amount=50):
                             genres=fill_with_data(genres, 1, 3),
                             songs=fill_with_data(songs, 5, 10))
 
+    # creating users here
     for _ in range(amount):
         users = User.objects.all()
-        UserFactory.create(followers=fill_with_data(users, 0, len(users)),
-                           liked_songs=fill_with_data(songs, 5, 10))
+        user = \
+            UserFactory.create(followers=fill_with_data(users, 0, len(users)),
+                               liked_songs=fill_with_data(songs, 5, 10))
+        # creating playlists for user
+        for _ in range(amount//10):
+            PlaylistFactory.create(songs=fill_with_data(songs, 5, 10),
+                                   owner=user)

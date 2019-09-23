@@ -1,12 +1,14 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-from django.db.models import (BooleanField, CharField, EmailField, ImageField,
-                              IntegerField, ManyToManyField)
+from django.db.models import (
+    BooleanField, CharField, EmailField, ImageField, IntegerField,
+    ManyToManyField)
 
 from apps.media.models.song import Song
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, username, email, password=None, is_staff=False, is_superuser=False):
+    def create_user(self, username, email, password=None, is_staff=False,
+                    is_superuser=False):
 
         if not username:
             raise ValueError("Users must have the username")
@@ -28,7 +30,8 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, username, email, password=None):
-        user = self.create_user(username, email, password, is_staff=True, is_superuser=True)
+        user = self.create_user(username, email, password, is_staff=True,
+                                is_superuser=True)
         user.is_superuser = True
 
 

@@ -1,7 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 
 from apps.media.serializers.song import SongShortInfoSerializer
-from apps.user.models.user import Playlist
+from apps.user.models.playlist import Playlist
 
 
 class PlaylistSerializer(ModelSerializer):
@@ -9,7 +9,7 @@ class PlaylistSerializer(ModelSerializer):
 
     class Meta:
         model = Playlist
-        fields = ('name', 'songs', 'songs_amount', 'is_private',)
+        fields = ('name', 'songs', 'songs_amount', 'is_private', 'owner')
         read_only_fields = ('songs_amount',)
 
 
@@ -19,17 +19,9 @@ class PlaylistShortInfoSerializer(ModelSerializer):
 
 
 class PlaylistCUSerializer(ModelSerializer):
-    class Meta(PlaylistSerializer.Meta):
-        fields = ('name', 'is_private',)
 
-    def create(self, validated_data):
-        user = None
-        request = self.context.get("request")
-        if request and hasattr(request, "user"):
-            user = request.user
-        playlist = Playlist.objects.create(**validated_data)
-        playlist.users.add(user)
-        return playlist
+    class Meta(PlaylistSerializer.Meta):
+        fields = ('name', 'is_private', 'owner')
 
 
 class SongsInPlaylistSerializer(ModelSerializer):
