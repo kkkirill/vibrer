@@ -32,8 +32,8 @@ def playlists(playlist_qty, user):
 
 
 @pytest.fixture
-def is_staff(is_staff=False):
-    return is_staff
+def is_staff():
+    return False
 
 
 @pytest.fixture
