@@ -224,9 +224,10 @@ def fill(amount=50):
     # creating users here
     for _ in range(amount):
         users = User.objects.all()
-        user = \
-            UserFactory.create(followers=fill_with_data(users, 0, len(users)),
-                               liked_songs=fill_with_data(songs, 5, 10))
+        user = UserFactory.create(
+            followers=fill_with_data(users, 0, len(users)),
+            liked_songs=fill_with_data(songs, 5, 10)
+        )
         # creating playlists for user
         for _ in range(amount//10):
             PlaylistFactory.create(songs=fill_with_data(songs, 5, 10),

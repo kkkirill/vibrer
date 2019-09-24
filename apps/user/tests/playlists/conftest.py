@@ -6,9 +6,19 @@ from utils.factories import PlaylistFactory, SongFactory, UserFactory
 
 
 @pytest.fixture
-def playlist(user):
+def song_qty():
+    return 1
+
+
+@pytest.fixture
+def songs(song_qty):
+    return SongFactory.create_batch(size=song_qty, explicit=False)
+
+
+@pytest.fixture
+def playlist(user, songs):
     return PlaylistFactory.create(owner=user, is_private=False,
-                                  songs=SongFactory.create_batch(size=6))
+                                  songs=songs)
 
 
 @pytest.fixture
@@ -22,8 +32,13 @@ def playlists(playlist_qty, user):
 
 
 @pytest.fixture
-def user():
-    return UserFactory.create(is_staff=False)
+def is_staff(is_staff=False):
+    return is_staff
+
+
+@pytest.fixture
+def user(is_staff):
+    return UserFactory.create(is_staff=is_staff)
 
 
 @pytest.fixture
@@ -32,5 +47,5 @@ def token(user):
 
 
 @pytest.fixture
-def songs():
+def songs_for_added():
     return SongFactory.create_batch(size=4)
