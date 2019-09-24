@@ -23,6 +23,14 @@ class PlaylistCUSerializer(ModelSerializer):
     class Meta(PlaylistSerializer.Meta):
         fields = ('name', 'is_private', 'owner')
 
+    def get_fields(self, *args, **kwargs):
+        fields = super(PlaylistCUSerializer, self).get_fields()
+        request = self.context.get('request', None)
+        if request and getattr(request, 'method', None) == "PUT":
+            for field in fields.values():
+                field.required = False
+        return fields
+
 
 class SongsInPlaylistSerializer(ModelSerializer):
     class Meta(PlaylistSerializer.Meta):

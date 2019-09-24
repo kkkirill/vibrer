@@ -1,15 +1,13 @@
 import pytest
+from rest_auth.app_settings import TokenSerializer, create_token
+from rest_auth.models import TokenModel
 
-# from rest_auth.models import TokenModel
-# from rest_auth.app_settings import create_token, TokenSerializer
-from utils.factories import (
-    PlaylistFactory, SongFactory, UserFactory)
+from utils.factories import PlaylistFactory, SongFactory, UserFactory
 
 
 @pytest.fixture
-def playlist(is_private=False):
-    user = UserFactory.create()
-    return PlaylistFactory.create(owner=user, is_private=is_private,
+def playlist(user):
+    return PlaylistFactory.create(owner=user, is_private=False,
                                   songs=SongFactory.create_batch(size=6))
 
 
@@ -19,18 +17,20 @@ def playlist_qty():
 
 
 @pytest.fixture
-def playlists(album_qty):
-    user = UserFactory.create()
+def playlists(playlist_qty, user):
     return PlaylistFactory.create_batch(size=playlist_qty, owner=user)
 
 
 @pytest.fixture
 def user():
-    user = UserFactory.get()
-    PlaylistFactory.create(owner=user)
-    return user
+    return UserFactory.create(is_staff=False)
 
 
-# @pytest.fixture
-# def token(user):
-#     return create_token(TokenModel, user, TokenSerializer)
+@pytest.fixture
+def token(user):
+    return create_token(TokenModel, user, TokenSerializer)
+
+
+@pytest.fixture
+def songs():
+    return SongFactory.create_batch(size=4)
