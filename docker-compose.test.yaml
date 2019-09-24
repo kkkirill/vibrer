@@ -3,6 +3,13 @@ version: '3'
 services:
   db:
     ports: []
+    networks:
+      - app_net
+  localstack:
+    ports:
+      - "4567-4584:4567-4584"
+    networks:
+      - app_net
   web:
     image: "${APP_NAME}_${APP_HASH}"
     build:
@@ -10,3 +17,9 @@ services:
       args:
         - TEST="true"
     ports: []
+    networks:
+      - app_net
+
+networks:
+  app_net:
+    driver: bridge

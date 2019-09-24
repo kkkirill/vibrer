@@ -19,6 +19,9 @@ mutagen = "==1.42.0"
 factory-boy = "==2.12.0"
 django-rest-auth = "==0.9.5"
 drf-extensions = "==0.5.0"
+localstack = "==0.10.2.5"
+awscli = "==1.16.236"
+boto3 = "==1.9.226"
 
 [requires]
 python_version = "3.7"

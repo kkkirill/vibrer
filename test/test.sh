@@ -1,3 +1,5 @@
 #!/bin/bash
 
-pytest -vv --ds=vibrer.settings apps/
+source utils/bucket_create.sh
+
+pytest -vv --ds=vibrer.settings apps/ test/upload/
