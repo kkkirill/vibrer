@@ -12,8 +12,7 @@ class TestUpload:
     @pytest.mark.parametrize('file_name', ['media/song.mp3'])
     def test_upload_file(self, file_name):
         file_uploader = FileUploaderS3()
-        key = file_name
-        file_uploader.upload_file_to_s3(file_name, key)
+        key = file_uploader.upload_file_to_s3(file_name)
         response = file_uploader.head_object(key)
         assert response['ResponseMetadata']['HTTPStatusCode'] == 200
 
