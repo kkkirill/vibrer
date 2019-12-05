@@ -13,7 +13,7 @@ boto3 = "==1.9.226"
 
 [packages]
 pillow = "==6.1.0"
-Django = "==2.2.4"
+Django = "==2.2.8"
 djangorestframework = "==3.10.2"
 psycopg2-binary = ">=2.7,<3.0"
 django-filter = "==2.2.0"
