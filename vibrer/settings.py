@@ -178,6 +178,13 @@ LOGIN_URL = '/auth/login/'
 LOGOUT_URL = '/auth/login/'
 
 SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'api_key': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    },
     'VALIDATOR_URL': None,
 }
 
