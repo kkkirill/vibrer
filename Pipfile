@@ -12,7 +12,7 @@ awscli = "==1.16.236"
 boto3 = "==1.9.226"
 
 [packages]
-pillow = "==6.1.0"
+pillow = "==8.1.1"
 Django = "==2.2.4"
 djangorestframework = "==3.10.2"
 psycopg2-binary = ">=2.7,<3.0"
